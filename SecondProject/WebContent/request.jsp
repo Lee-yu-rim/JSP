@@ -29,7 +29,7 @@
 		forward.forward(request, response);
 		
 		//페이지 이동 메소드 두가지
-		//getRequestDispatcher forward() - request 객체에 접근할 수 있는 권한을 넘겨주는 메소드 -> 기존 페이지의 파일정보가 페이지를 이동해도 그대로 남아있음(권한만 넘겨주는 것)
+		//getRequestDispatcher forward() - request 객체에 접근할 수 있는 권한을 넘겨주는 메소드 -> 기존 페이지의 파일정보가 페이지를 이동해도 이전 페이지 주소를 유지(request 객체 정보를 확인 가능)
 		//페이지를 이동한 주소값이 http://localhost:8081/SecondProject/request.jsp 로 찍힘 Requestforward.jsp 이 아님
 		//sendRedirect() - 페이지가 이동하면 기존 페이지의 파일정보가 아닌 이동한 페이지의 파일정보로 넘어감
 		
