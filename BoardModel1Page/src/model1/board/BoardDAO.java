@@ -19,7 +19,7 @@ public class BoardDAO extends JDBConnect{
 		int totalCount = 0;
 		String query = "select count(*) from board";   //board 게시판의 전체글의 갯수를 가져온다.
 		
-		//검색 조건에 맞는 데이터만 보여주기
+		//검색어 있다면 이 조건문 실행
 		if(map.get("searchWord") != null) {  //단어를 검색했을 경우
 			//where 앞에 띄어쓰기 꼭 해주기!
 			query += " where " + map.get("searchField") + " "  //위의 쿼리문에 이어서 + 제목과 내용(searchField) 중에서
@@ -29,8 +29,9 @@ public class BoardDAO extends JDBConnect{
 		try {
 			stmt = con.createStatement();  //쿼리문 생성
 			rs = stmt.executeQuery(query);  //쿼리문 실행
-			rs.next();
-			totalCount = rs.getInt(1);  //totalCount = 위의 count 컬럼(게시글 갯수)
+			rs.next();  //rs에 저장된 행이 있는지 확인 후 최초행으로 커서 이동 / 행이 없을 때 까지 쿼리문 실행 반복
+			totalCount = rs.getInt(1);  //첫번째 컬럼의 값을 가져옴
+			//rs.getInt(1) = 위 쿼리문의 첫번째 줄에서 실행한 select count(*)을 뜻하므로 전체 게시글의 갯수를 말함, 반환되는 값이 숫자이므로 getInt()메소드를 이용하여 값을 가져옴
 			
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -39,13 +40,15 @@ public class BoardDAO extends JDBConnect{
 		return totalCount;  //전체 게시글의 갯수 반환
 	}
 	
-	//검색 조건에 맞는 게시글 목록 반환하는 메소드
+	//게시글 목록 반환하는 메소드
 	public List<BoardDTO> selectList(Map<String, Object> map){
 		
+		//게시물 목록을 반환하기 위한 변수
 		List<BoardDTO> bbs = new ArrayList<BoardDTO>();
 		
 		String query = "select * from board";
 		
+		//검색어가 있다면 이 조건문 실행
 		if(map.get("searchWord") != null) { 
 			query += " where " + map.get("searchField") + " "
 				+ "like '%" + map.get("searchWord") + "%'";  
@@ -57,6 +60,7 @@ public class BoardDAO extends JDBConnect{
 			stmt = con.createStatement();
 			rs = stmt.executeQuery(query);
 			
+			//DB에서 한 게시물의 정보를 하나씩 담아와서 남은 데이터가 없을 때까지 반복
 			while(rs.next()) {
 				BoardDTO dto = new BoardDTO();
 				

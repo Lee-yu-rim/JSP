@@ -1,10 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="model1.board.BoardDAO" %>
+<%@ page import="model1.board.BoardDTO" %>
+<%@ page import="utils.BoardPage" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.HashMap" %>
 <%@ page import="java.util.Map" %>
-<%@ page import="model1.board.BoardDAO" %>
-<%@ page import="model1.board.BoardDTO" %>
+
 <%
 	//DAO 생성 및 DB 연결
 	BoardDAO dao = new BoardDAO(application);
@@ -12,7 +14,9 @@
 	//사용자가 입력한 검색 조건을 Map에 저장 -> 검색기능 구현
 	Map<String, Object> param = new HashMap<String, Object>();
 	
+	//searchField : 검색창의 제목/내용 선택하는 부분에 대한 선택값
 	String searchField = request.getParameter("searchField");
+	//searchWord : 검색창에 내가 입력한 단어값
 	String searchWord = request.getParameter("searchWord");
 	
 	if(searchWord != null) {  //검색하는 값이 있어야 실행할 수 있도록 해줌(값이 없는데 검색이 실행되면 안되므로!)
@@ -128,7 +132,10 @@
 	
 	<!-- 목록 하단의 [글쓰기] 버튼 -->
 	<table border="1" width="90%">
-		<tr align="right">
+		<tr align="center">
+			<td>
+				<%=BoardPage.pagingStr(totalCount, pageSize, blockPage, pageNum, request.getRequestURI()) %>
+			</td>
 			<td><button type="button" onclick="location.href='Write.jsp';">글쓰기</button></td>
 		</tr>
 	</table>
