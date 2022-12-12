@@ -39,7 +39,6 @@
 		</tr>
 		
 		<c:choose>
-		<!-- 게시물이 없을 때 -->
 			<c:when test="${ empty boardLists }">
 				<tr>
 					<td colspan="6" align="center">
@@ -49,15 +48,18 @@
 			</c:when>
 			
 			<c:otherwise>
-			<!-- 게시물이 있을 때 -->
 				<c:forEach items="${ boardLists }" var="row" varStatus="loop">
 					<tr>
 						<td>${ map.totalCount - (((map.pageNum-1) * map.pageSize) + loop.index)} </td>
-						<td>${ row.title }</td>  <!-- getTitle() 호출 -->
-						<td>${ row.name }</td>   <!-- getName() 호출 ... -->
+						<td><a href="view.do?idx=${ row.idx }">${ row.title }</a></td>  
+						<td>${ row.name }</td>   
 						<td>${ row.visitcount }</td>
 						<td>${ row.postdate }</td>
-						<td>[DOWN]</td>
+						<td>
+							<c:if test="${ not empty row.ofile }">
+								<a href="download.do?ofile=${ row.ofile }&sfile=${ row.sfile }&idx=${ row.idx }">[DOWN]</a>
+							</c:if>
+						</td>
 					</tr>
 				</c:forEach>
 			</c:otherwise>
@@ -67,7 +69,7 @@
 		<table border="1" width="90%">
 			<tr align="center">
 				<td>${ map.pagingImg }</td>
-				<td width="100"><button type="button">글쓰기</button></td>
+				<td width="100"><button type="button" onclick="location.href='write.do'">글쓰기</button></td>
 			</tr>
 		
 	</table>
